@@ -7,7 +7,7 @@ const register = async (userData) => {
 	var response;
 	var AxiosError;
 	await axios
-		.post(API_URL, userData)
+		.post(API_URL + "register/", userData)
 		.then((res) => {
 			response = res;
 		})
@@ -52,6 +52,32 @@ const login = async (userData) => {
 	}
 };
 
+// // Login user
+// const loginWithToken = async (token) => {
+// 	var response;
+// 	var AxiosError;
+// 	console.log(token);
+// 	await axios
+// 		.post(API_URL + "getme", { token })
+// 		.then((res) => {
+// 			response = res;
+// 		})
+// 		.catch((err) => {
+// 			console.log(err);
+// 			AxiosError = err;
+// 		});
+
+// 	if (response) {
+// 		localStorage.setItem("user", JSON.stringify(response.data));
+// 		return response.data;
+// 	}
+// 	if (AxiosError) {
+// 		const message = AxiosError.response.data.message;
+// 		// console.log(message);
+// 		throw new Error(message);
+// 	}
+// };
+
 // Logout user
 const logout = async () => {
 	localStorage.removeItem("user");
@@ -78,62 +104,11 @@ const logout = async () => {
 	}
 };
 
-// add item to cart
-const addToCart = async (productId) => {
-	var response;
-	var AxiosError;
-	await axios
-		.post(API_URL + `addCart/${productId}`)
-		.then((res) => {
-			response = res;
-		})
-		.catch((err) => {
-			console.log(err);
-			AxiosError = err;
-		});
-
-	if (response) {
-		localStorage.setItem("user", JSON.stringify(response.data));
-		return response.data;
-	}
-	if (AxiosError) {
-		const message = AxiosError.response.data.message;
-		// console.log(message);
-		throw new Error(message);
-	}
-};
-
-// remove item from cart
-const removeFromCart = async (productId) => {
-	var response;
-	var AxiosError;
-	await axios
-		.post(API_URL + `removeCart/${productId}`)
-		.then((res) => {
-			response = res;
-		})
-		.catch((err) => {
-			console.log(err);
-			AxiosError = err;
-		});
-
-	if (response) {
-		localStorage.setItem("user", JSON.stringify(response.data));
-		return response.data;
-	}
-	if (AxiosError) {
-		const message = AxiosError.response.data.message;
-		// console.log(message);
-		throw new Error(message);
-	}
-};
-
 const userService = {
 	register,
 	logout,
 	login,
-	addToCart,
-	removeFromCart,
+	// loginWithToken,
 };
 
 export default userService;

@@ -11,10 +11,9 @@ const {
 const router = express.Router();
 const { protector } = require("../middleware/authHandler");
 //
-router.post("/", registerUser);
+router.post("/register/", registerUser);
 router.post("/login/", loginUser);
-//just to test
-router.get("/me/:id", getMe);
+router.post("/getme/", getMe);
 
 //protected
 router.post("/logout/", protector, logoutUser);

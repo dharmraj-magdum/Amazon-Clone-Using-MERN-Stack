@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { removeFromCart } from "../redux/user/userSlice";
+import { removeFromCart } from "../redux/userproduct/userProductSlice";
 import { reset } from "../redux/userproduct/userProductSlice";
 
 import { useDispatch } from "react-redux";
@@ -24,12 +24,12 @@ const Option = ({ deletedata }) => {
 
 	return (
 		<div className="add_remove_select" key={deletedata}>
-			<select name="" id="">
+			{/* <select name="" id="">
 				<option value="1">1</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
 				<option value="4">4</option>
-			</select>
+			</select> */}
 			<p
 				onClick={() => removeItem(deletedata)}
 				style={{ cursor: "pointer" }}

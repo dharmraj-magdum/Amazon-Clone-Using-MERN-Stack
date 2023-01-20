@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
 //the slice.reducer we get here that act as reducer for app state we mention
 import productReducer from "./products/productSlice";
 import userReducer from "./user/userSlice";
@@ -11,6 +12,9 @@ export const store = configureStore({
 		products: productReducer,
 		auth: userReducer,
 		userProducts: userProductReducer,
+	},
+	middlewares: {
+		thunk,
 	},
 });
 //-->{"objdataname":"its reducer(have state and actions)"}

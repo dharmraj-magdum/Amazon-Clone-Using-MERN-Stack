@@ -2,6 +2,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"));
+// console.log(localStorage.getItem("token"));
+// console.log(Cookies.get("token"));
+// console.log(document.cookie.split(";").length);
+
+// var user = null;
+// let cookieToken = document.cookie.split(";")[0];
+// if (cookieToken) {
+// 	cookieToken = cookieToken.split("=")[1];
+// 	user = await userService.loginWithToken(cookieToken);
+// }
 
 const initialState = {
 	user: user ? user : null,
@@ -45,7 +55,25 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
 		return thunkAPI.rejectWithValue(message);
 	}
 });
-
+// // Login user
+// export const loginWithToken = createAsyncThunk(
+// 	"auth/login",
+// 	async (token, thunkAPI) => {
+// 		try {
+// 			return await userService.loginWithToken(token);
+// 		} catch (error) {
+// 			// console.log("error in slice--", error);
+// 			const message =
+// 				(error.response &&
+// 					error.response.data &&
+// 					error.response.data.message) ||
+// 				error.message ||
+// 				error.toString();
+// 			// console.log("before reject", message);
+// 			return thunkAPI.rejectWithValue(message);
+// 		}
+// 	}
+// );
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 	try {
 		return await userService.logout();
@@ -61,46 +89,6 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 		return thunkAPI.rejectWithValue(message);
 	}
 });
-
-// reducer for add to cart
-export const addToCart = createAsyncThunk(
-	"user/addToCart",
-	async (productId, thunkAPI) => {
-		try {
-			return await userService.addToCart(productId);
-		} catch (error) {
-			// console.log("error in slice--", error);
-			const message =
-				(error.response &&
-					error.response.data &&
-					error.response.data.message) ||
-				error.message ||
-				error.toString();
-			// console.log("before reject", message);
-			return thunkAPI.rejectWithValue(message);
-		}
-	}
-);
-
-// reducer for remove from cart
-export const removeFromCart = createAsyncThunk(
-	"user/removeFromCart",
-	async (productId, thunkAPI) => {
-		try {
-			return await userService.removeFromCart(productId);
-		} catch (error) {
-			// console.log("error in slice--", error);
-			const message =
-				(error.response &&
-					error.response.data &&
-					error.response.data.message) ||
-				error.message ||
-				error.toString();
-			// console.log("before reject", message);
-			return thunkAPI.rejectWithValue(message);
-		}
-	}
-);
 
 export const userSlice = createSlice({
 	name: "auth",
@@ -145,6 +133,20 @@ export const userSlice = createSlice({
 				state.message = action.payload;
 				state.user = null;
 			})
+			// .addCase(loginWithToken.pending, (state) => {
+			// 	state.isLoading = true;
+			// })
+			// .addCase(loginWithToken.fulfilled, (state, action) => {
+			// 	state.isLoading = false;
+			// 	state.isSuccess = true;
+			// 	state.user = action.payload;
+			// })
+			// .addCase(loginWithToken.rejected, (state, action) => {
+			// 	state.isLoading = false;
+			// 	state.isError = true;
+			// 	state.message = action.payload;
+			// 	state.user = null;
+			// })
 			.addCase(logout.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
@@ -152,34 +154,6 @@ export const userSlice = createSlice({
 				state.user = null;
 			})
 			.addCase(logout.rejected, (state, action) => {
-				state.isLoading = false;
-				state.isError = true;
-				state.message = action.payload;
-				state.user = null;
-			})
-			//related to products
-			.addCase(addToCart.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(addToCart.fulfilled, (state, action) => {
-				state.isLoading = false;
-				state.isSuccess = true;
-				state.user = action.payload;
-			})
-			.addCase(addToCart.rejected, (state, action) => {
-				state.isLoading = false;
-				state.isError = true;
-				state.message = action.payload;
-			})
-			.addCase(removeFromCart.pending, (state) => {
-				state.isLoading = true;
-			})
-			.addCase(removeFromCart.fulfilled, (state, action) => {
-				state.isLoading = false;
-				state.isSuccess = true;
-				state.user = action.payload;
-			})
-			.addCase(removeFromCart.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;

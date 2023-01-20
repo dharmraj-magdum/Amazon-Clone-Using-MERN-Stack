@@ -15,7 +15,7 @@ const removeFromCart = asyncHandler(async (req, res) => {
 		// 	user.cart.pop();
 		// } //
 		await req.user.save();
-		res.status(201).json(req.user);
+		res.status(201).json({ productId });
 		// console.log("iteam removed");
 	} else {
 		res.status(400);
@@ -79,7 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
 		const token = generateToken(user.id);
 		res.cookie("token", token, {
 			expires: new Date(Date.now() + 2589000),
-			httpOnly: true,
+			httpOnly: false,
 		});
 		res.status(201).json({
 			_id: user.id,
@@ -120,7 +120,7 @@ const loginUser = asyncHandler(async (req, res) => {
 		const token = generateToken(user.id);
 		res.cookie("token", token, {
 			expires: new Date(Date.now() + 2589000),
-			httpOnly: true,
+			httpOnly: false,
 		});
 		res.json({
 			_id: user.id,
@@ -150,8 +150,13 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @access  Private
 //just for testing
 const getMe = asyncHandler(async (req, res) => {
-	if (req.params.id) {
-		const user = await UserModel.findById(req.params.id);
+	const { token } = req.body;
+	console.log("body", req.body);
+	console.log("token", token);
+	if (token) {
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		console.log("decoded", decoded);
+		const user = await UserModel.findById(decoded);
 		res.status(200).json(user);
 	} else {
 		res.status(400);

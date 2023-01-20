@@ -64,7 +64,7 @@ const SignIn = () => {
 			console.log(message);
 		}
 
-		if (isSuccess || user) {
+		if (isSuccess || (user && user.name)) {
 			navigate("/");
 		}
 

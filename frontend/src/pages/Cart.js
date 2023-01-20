@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../redux/products/productSlice";
-import { addToCart } from "../redux/user/userSlice";
+import { addToCart } from "../redux/userproduct/userProductSlice";
 //
 import CircularProgress from "@mui/material/CircularProgress";
 import "../stylesheets/cart.css";
@@ -26,6 +26,7 @@ const Cart = () => {
 	useEffect(() => {
 		const temp = products.filter((prod) => prod._id === productId)[0];
 		// console.log(product);
+		// dispatcher(getProductById(id))
 		setProduct(temp);
 	});
 	// console.log([product]);

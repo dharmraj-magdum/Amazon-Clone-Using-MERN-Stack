@@ -9,24 +9,6 @@ const initialState = {
 	message: "",
 };
 
-// export const getUserProducts = createAsyncThunk(
-// 	//prefix string ,payloadCreator
-// 	"userProducts/getUserProducts",
-// 	async (_, thunkAPI) => {
-// 		try {
-// 			return await userProductService.getProducts();
-// 		} catch (error) {
-// 			const message =
-// 				(error.response &&
-// 					error.response.data &&
-// 					error.response.data.message) ||
-// 				error.message ||
-// 				error.toString();
-// 			return thunkAPI.rejectWithValue(message);
-// 		}
-// 	}
-// );
-
 // reducer for get my cart items
 export const cartItems = createAsyncThunk(
 	"userProducts/cartItems",
@@ -47,8 +29,46 @@ export const cartItems = createAsyncThunk(
 	}
 );
 
-//this a slice of product
-//which conatin all actions and reducers ffor that actions
+// reducer for add to cart
+export const addToCart = createAsyncThunk(
+	"userProducts/addToCart",
+	async (productId, thunkAPI) => {
+		try {
+			return await userProductService.addToCart(productId);
+		} catch (error) {
+			// console.log("error in slice--", error);
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			// console.log("before reject", message);
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
+// reducer for remove from cart
+export const removeFromCart = createAsyncThunk(
+	"userProducts/removeFromCart",
+	async (productId, thunkAPI) => {
+		try {
+			return await userProductService.removeFromCart(productId);
+		} catch (error) {
+			// console.log("error in slice--", error);
+			const message =
+				(error.response &&
+					error.response.data &&
+					error.response.data.message) ||
+				error.message ||
+				error.toString();
+			// console.log("before reject", message);
+			return thunkAPI.rejectWithValue(message);
+		}
+	}
+);
+
 export const userProductSlice = createSlice({
 	name: "userProducts",
 	initialState,
@@ -76,12 +96,40 @@ export const userProductSlice = createSlice({
 				state.isError = true;
 				state.message = action.payload;
 				state.userProducts = null;
+			})
+			.addCase(addToCart.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(addToCart.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.userProducts = action.payload;
+			})
+			.addCase(addToCart.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			})
+			.addCase(removeFromCart.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(removeFromCart.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				let id = action.payload.productId;
+				state.userProducts = state.userProducts.filter(
+					(ele) => ele._id !== id
+				);
+			})
+			.addCase(removeFromCart.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+				state.user = null;
 			});
 	},
 });
 
 export const { reset } = userProductSlice.actions;
 
-//this a state mangement reducer slice
-//this will get mentioned at store
 export default userProductSlice.reducer;
