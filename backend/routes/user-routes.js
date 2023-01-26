@@ -13,10 +13,11 @@ const { protector } = require("../middleware/authHandler");
 //
 router.post("/register/", registerUser);
 router.post("/login/", loginUser);
+router.post("/logout/", logoutUser);
+//test
 router.post("/getme/", getMe);
 
 //protected
-router.post("/logout/", protector, logoutUser);
 router.post("/addCart/:productId", protector, addToCart);
 router.post("/removeCart/:productId", protector, removeFromCart);
 

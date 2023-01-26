@@ -64,16 +64,14 @@ const Slide = ({ title, products }) => {
 								<div className="product_img">
 									<img src={e.url} alt="product" />
 								</div>
-								<p className="products_name">
-									{e.title.shortTitle}
-								</p>
+								<p className="products_name">{e.title}</p>
 								<p
 									className="products_offer"
 									style={{ color: "#  007185" }}
 								>
 									{e.discount}
 								</p>
-								<p className="products_explore">{e.tagline}</p>
+								<p className="products_explore">{e.category}</p>
 							</div>
 						</NavLink>
 					);

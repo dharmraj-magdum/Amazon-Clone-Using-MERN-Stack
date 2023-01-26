@@ -8,7 +8,7 @@ const protector = asyncHandler(async (req, res, next) => {
 	//check authization string available or NOT
 	// console.log(`${req.cookies}`.red);
 	// console.log(`${req.cookies.token}`.red);
-	const { token } = req.cookies;
+	let { token } = req.cookies;
 	if (token) {
 		// console.log(`${token}`.yellow);
 		try {
@@ -28,12 +28,13 @@ const protector = asyncHandler(async (req, res, next) => {
 				// console.log(user);
 				// const { name, email } = user;
 				// console.log("name-", name, email);
-				req.user = user;
+				const { password, ...info } = user._doc;
+				req.user = { ...info };
 				next();
 			}
 		} catch (error) {
-			res.status(401);
 			console.log(`${error}`.red);
+			res.status(401);
 			throw new Error("WRONG TOKEN /CANT verify /");
 		}
 	} else {

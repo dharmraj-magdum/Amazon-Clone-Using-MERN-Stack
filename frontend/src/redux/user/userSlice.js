@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "./userService";
 // Get user from localStorage
-const user = JSON.parse(localStorage.getItem("user"));
 // console.log(localStorage.getItem("token"));
-// console.log(Cookies.get("token"));
+
 // console.log(document.cookie.split(";").length);
 
-// var user = null;
-// let cookieToken = document.cookie.split(";")[0];
-// if (cookieToken) {
-// 	cookieToken = cookieToken.split("=")[1];
-// 	user = await userService.loginWithToken(cookieToken);
-// }
+let user = null;
+let cookieToken = document.cookie.split(";")[0];
+if (cookieToken) {
+	cookieToken = cookieToken.split("=")[1];
+	// console.log(cookieToken);
+	user = JSON.parse(localStorage.getItem("user"));
+}
 
 const initialState = {
 	user: user ? user : null,
@@ -94,7 +94,7 @@ export const userSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
-		reset: (state) => {
+		userReset: (state) => {
 			state.user = null;
 			state.isLoading = false;
 			state.isSuccess = false;
@@ -162,5 +162,5 @@ export const userSlice = createSlice({
 	},
 });
 
-export const { reset } = userSlice.actions;
+export const { userReset } = userSlice.actions;
 export default userSlice.reducer;

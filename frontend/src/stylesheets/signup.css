@@ -12,7 +12,9 @@ section {
 	flex-direction: column;
 	align-items: center;
 }
-
+.sign-up {
+	margin: 1.2rem auto;
+}
 .sign_header img {
 	width: 200px;
 	margin-top: -40px;

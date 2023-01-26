@@ -16,14 +16,14 @@ const register = async (userData) => {
 			AxiosError = err;
 		});
 
-	if (response) {
-		localStorage.setItem("user", JSON.stringify(response.data));
-		return response.data;
-	}
 	if (AxiosError) {
 		const message = AxiosError.response.data.message;
 		// console.log(message);
 		throw new Error(message);
+	}
+	if (response) {
+		localStorage.setItem("user", JSON.stringify(response.data));
+		return response.data;
 	}
 };
 
@@ -40,15 +40,15 @@ const login = async (userData) => {
 			console.log(err);
 			AxiosError = err;
 		});
-
-	if (response) {
-		localStorage.setItem("user", JSON.stringify(response.data));
-		return response.data;
-	}
 	if (AxiosError) {
 		const message = AxiosError.response.data.message;
 		// console.log(message);
 		throw new Error(message);
+	}
+
+	if (response) {
+		localStorage.setItem("user", JSON.stringify(response.data));
+		return response.data;
 	}
 };
 

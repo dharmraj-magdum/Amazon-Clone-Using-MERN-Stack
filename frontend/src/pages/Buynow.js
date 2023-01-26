@@ -1,11 +1,14 @@
 import { Divider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { cartItems, reset } from "../redux/userproduct/userProductSlice";
+import {
+	cartItems,
+	userProductsReset,
+} from "../redux/userproduct/userProductSlice";
 //
 import "../stylesheets/buynow.css";
 import Subtotal from "../components/Subtotal";
-import Right from "../components/Right";
+import FinalTotal from "../components/FinalTotal";
 import Option from "../components/Option";
 import Empty from "../components/Empty";
 
@@ -16,23 +19,14 @@ const Buynow = () => {
 	);
 	// console.log(cart.length);
 	const dispatcher = useDispatch();
-	const getcart = () => {
-		// console.log("getcart called");
-		// if (!isSuccess || isLoading) {
-		// 	dispatcher(cartItems());
-		// }
-		dispatcher(cartItems());
-		// setCart(userProducts);
-	};
-	// const [cart, setCart] = useState("");
 
 	// console.log(cart);
 
 	useEffect(() => {
-		getcart();
+		dispatcher(cartItems());
 
 		return () => {
-			dispatcher(reset());
+			// dispatcher(userProductsReset());
 		};
 	}, [dispatcher]);
 	return (
@@ -53,15 +47,11 @@ const Buynow = () => {
 											className="item_containert"
 											key={ind}
 										>
-											<img
-												src={e.detailUrl}
-												alt="imgitem"
-											/>
+											<img src={e.url} alt="imgitem" />
 											<div className="item_details">
-												<h3>{e.title.longTitle}</h3>
-												<h3>{e.title.shortTitle}</h3>
+												<h3>{e.title}</h3>
 												<h3 className="diffrentprice">
-													₹{e.price.cost}.00
+													₹{e.price}.00
 												</h3>
 												<p className="unusuall">
 													Usually dispatched in 8
@@ -77,7 +67,7 @@ const Buynow = () => {
 												<Option deletedata={e._id} />
 											</div>
 											<h3 className="item_price">
-												₹{e.price.cost}.00
+												₹{e.price}.00
 											</h3>
 										</div>
 										<Divider />
@@ -87,7 +77,7 @@ const Buynow = () => {
 
 							<Subtotal cart={userProducts} />
 						</div>
-						<Right cart={userProducts} />
+						<FinalTotal cart={userProducts} />
 					</div>
 				</div>
 			) : (

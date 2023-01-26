@@ -4,7 +4,10 @@ import { useParams } from "react-router";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../redux/products/productSlice";
-import { addToCart } from "../redux/userproduct/userProductSlice";
+import {
+	addToCart,
+	userProductsReset,
+} from "../redux/userproduct/userProductSlice";
 //
 import CircularProgress from "@mui/material/CircularProgress";
 import "../stylesheets/cart.css";
@@ -19,15 +22,20 @@ const Cart = () => {
 	);
 	const dispatcher = useDispatch();
 	const { productId } = useParams();
-	const [product, setProduct] = useState(null);
+	console.log(productId);
+	const temp = products.find((prod) => prod._id === productId);
+
+	const [product, setProduct] = useState(temp);
 
 	// console.log(productId);
 	// console.log(products);
 	useEffect(() => {
-		const temp = products.filter((prod) => prod._id === productId)[0];
 		// console.log(product);
 		// dispatcher(getProductById(id))
-		setProduct(temp);
+		// setProduct(temp);
+		return () => {
+			// userProductsReset();
+		};
 	});
 	// console.log([product]);
 
@@ -56,7 +64,7 @@ const Cart = () => {
 			{product ? (
 				<div className="cart_container">
 					<div className="left_cart">
-						<img src={product.detailUrl} alt="cart" />
+						<img src={product.url} alt="cart" />
 						<div className="cart_btn">
 							<button
 								className="cart_btn1"
@@ -70,53 +78,26 @@ const Cart = () => {
 						</div>
 					</div>
 					<div className="right_cart">
-						<h3>{product.title.shortTitle}</h3>
-						<h4>{product.title.longTitle}</h4>
+						<h3>{product.title}</h3>
+						{/* <h5>{product.desc}</h5> */}
 						<Divider />
 						<p className="mrp">
-							M.R.P. : <del>₹{product.price.mrp}</del>
+							M.R.P. : <del>₹{product.price}</del>
 						</p>
 						<p>
 							Deal of the Day :{" "}
 							<span style={{ color: "#B12704" }}>
-								₹{product.price.cost}.00
+								₹{product.price}.00
 							</span>
 						</p>
 						<p>
 							You save :{" "}
 							<span style={{ color: "#B12704" }}>
 								{" "}
-								₹{product.price.mrp - product.price.cost} (
-								{product.price.discount}){" "}
+								₹{product.price - product.price - 10}
 							</span>
 						</p>
 
-						<div className="discount_box">
-							<h5>
-								Discount :{" "}
-								<span style={{ color: "#111" }}>
-									{product.discount}
-								</span>{" "}
-							</h5>
-							<h4>
-								FREE Delivery :{" "}
-								<span
-									style={{ color: "#111", fontWeight: "600" }}
-								>
-									Oct 8 - 21
-								</span>{" "}
-								Details
-							</h4>
-							<p style={{ color: "#111" }}>
-								Fastest delivery:{" "}
-								<span
-									style={{ color: "#111", fontWeight: "600" }}
-								>
-									{" "}
-									Tomorrow 11AM
-								</span>
-							</p>
-						</div>
 						<p className="description">
 							About the Iteam :{" "}
 							<span
@@ -127,7 +108,7 @@ const Cart = () => {
 									letterSpacing: "0.4px",
 								}}
 							>
-								{product.description}
+								{product.desc}
 							</span>
 						</p>
 					</div>

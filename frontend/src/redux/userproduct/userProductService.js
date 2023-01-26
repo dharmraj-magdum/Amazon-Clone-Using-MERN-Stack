@@ -2,6 +2,8 @@ import axios from "axios";
 const API_URL_PRODUCT = "/api/products/";
 const API_URL_USER = "/api/user/";
 
+axios.defaults.withCredentials = true;
+
 // get  cart items of user
 const cartItems = async () => {
 	var response;

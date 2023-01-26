@@ -5,9 +5,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import Rightheader from "./Rightheader";
-import { getProducts } from "../redux/products/productSlice";
+import { getProducts, productsReset } from "../redux/products/productSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, reset } from "../redux/user/userSlice";
+import { logout, userReset } from "../redux/user/userSlice";
 //
 import logo from "../images/amazon_PNG25.png";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,11 +21,12 @@ import Search from "@mui/icons-material/Search";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 
 const Navbar = () => {
+	const { user } = useSelector((state) => state.auth);
+
 	const [text, setText] = useState("");
 	// only for search
 	const { products } = useSelector((state) => state.products);
 
-	const { user } = useSelector((state) => state.auth);
 	// console.log("---------");
 	// console.log(user);
 	// console.log("---------");
@@ -34,7 +35,10 @@ const Navbar = () => {
 
 	useEffect(() => {
 		dispatcher(getProducts());
-	}, [dispatcher]);
+		return () => {
+			// productsReset();
+		};
+	}, []);
 
 	const [open, setOpen] = useState(false);
 	const [liopen, setLiopen] = useState(true);
@@ -53,7 +57,7 @@ const Navbar = () => {
 		// console.log("logout");
 		setOpen(false);
 		dispatcher(logout());
-		dispatcher(reset());
+		dispatcher(userReset());
 		navigate("/");
 	};
 

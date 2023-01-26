@@ -11,7 +11,7 @@ const Subtotal = ({ cart }) => {
 	const totalAmount = () => {
 		let price = 0;
 		cart.map((item) => {
-			price += item.price.cost;
+			price += new Number(item.price);
 		});
 		setPrice(price);
 	};

@@ -12,7 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 //here we get dispatch funtions directly
 import { getProducts, reset } from "./redux/products/productSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Newnav from "./components/Newnav";
 import Home from "./pages/Home";
@@ -20,37 +20,36 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Buynow from "./pages/Buynow";
 import Cart from "./pages/Cart";
+import Admin from "./pages/Admin";
 import Footer from "./components/Footer";
 
+const Layout = () => {
+	return (
+		<>
+			<NavBar />
+			<Outlet />
+			<Newnav />
+		</>
+	);
+};
+
 function App() {
-	// const [data, setData] = useState(false);
-	// const dispatcher = useDispatch();
-	// const { products } = useSelector((state) => state.products);
-	// useEffect(() => {
-	// 	let res = dispatcher(getProducts());
-	// 	setData(res);
-	// }, []);
-
-	// useEffect(() => {
-	// 	setTimeout(() => {
-	// 		setData(true);
-	// 	}, 2000);
-	// }, []);
-
 	return (
 		<>
 			<BrowserRouter>
-				<NavBar />
-				<Newnav />
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<SignIn />} />
-					<Route path="/register" element={<SignUp />} />
-					<Route
-						path="/productdetails/:productId"
-						element={<Cart />}
-					/>
-					<Route path="/buynow" element={<Buynow />} />
+					<Route path="/" element={<Layout />}>
+						<Route path="/" element={<Home />} />
+						<Route path="/login" element={<SignIn />} />
+						<Route path="/register" element={<SignUp />} />
+						<Route
+							path="/productdetails/:productId"
+							element={<Cart />}
+						/>
+						<Route path="/buynow" element={<Buynow />} />
+					</Route>
+					<Route path="/Admin/*" element={<Admin />} />
+					<Route path="*" element={<Home />} />
 				</Routes>
 				<Footer />
 			</BrowserRouter>

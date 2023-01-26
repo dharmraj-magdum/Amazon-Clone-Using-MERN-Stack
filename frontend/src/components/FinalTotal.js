@@ -11,7 +11,7 @@ const Right = ({ cart }) => {
 	const totalAmount = () => {
 		let temp = 0;
 		cart.map((item) => {
-			temp += item.price.cost;
+			temp += new Number(item.price);
 		});
 		setPrice(temp);
 	};

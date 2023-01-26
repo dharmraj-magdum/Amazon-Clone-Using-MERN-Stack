@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/user/userSlice";
+import backlog from "../images/blacklogoamazon.png";
 
 const Signup = () => {
 	const [userdata, setUserdata] = useState({
@@ -47,23 +48,23 @@ const Signup = () => {
 		};
 		dispather(register(newUser));
 
-		if (isSuccess) {
-			toast.success("Login Successfully done 😃!", {
-				position: "top-center",
-			});
-		} else if (isError) {
-			console.log(message);
-			toast.error("message 👎!", {
-				position: "top-center",
-			});
-		}
+		// if (isSuccess) {
+		// 	toast.success("Login Successfully done 😃!", {
+		// 		position: "top-center",
+		// 	});
+		// } else if (isError) {
+		// 	console.log(message);
+		// 	toast.error("message 👎!", {
+		// 		position: "top-center",
+		// 	});
+		// }
 	};
 
 	return (
 		<section>
-			<div className="sign_container">
+			<div className="sign_container sign-up">
 				<div className="sign_header">
-					<img src="./blacklogoamazon.png" alt="signupimg" />
+					<img src={backlog} alt="signupimg" />
 				</div>
 				<div className="sign_form">
 					<form method="POST">

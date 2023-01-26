@@ -3,25 +3,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../redux/products/productSlice";
 //
 import "../stylesheets/home.css";
+import NavBar from "../components/NavBar";
+import Newnav from "../components/Newnav";
 import Banner from "../components/Banner";
 import Slide from "../components/Slide";
 import { Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 	const { products } = useSelector((state) => state.products);
+	const { user } = useSelector((state) => state.auth);
 	// console.log(products);
 
 	const dispatcher = useDispatch();
-	const loadData = () => {
-		// dispatcher(getProducts());
-	};
+
+	const navigator = useNavigate();
 	useEffect(() => {
-		setTimeout(loadData(), 2000);
+		// setTimeout(loadData(), 2000);
 		// console.log("useeffect runned");
+		if (user && user.isAdmin) {
+			navigator("/Admin");
+		}
 	}, [dispatcher]);
 
 	return (
 		<>
+			{/* <NavBar />
+			<Newnav /> */}
 			<div className="home_section">
 				<div className="banner_part">
 					<Banner />

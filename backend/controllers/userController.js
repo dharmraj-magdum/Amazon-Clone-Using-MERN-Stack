@@ -4,18 +4,21 @@ const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const UserModel = require("../models/UserModel");
 const ProductModel = require("../models/ProductModel");
+// const { use } = require("../routes/products-routes");
 
 const removeFromCart = asyncHandler(async (req, res) => {
 	const { productId } = req.params;
 	if (productId) {
-		req.user.cart = req.user.cart.filter((ele) => {
-			return ele != productId;
-		});
 		// while (user.cart.length > 0) {
 		// 	user.cart.pop();
 		// } //
-		await req.user.save();
-		res.status(201).json({ productId });
+		const user = await UserModel.findById(req.user._id);
+		user.cart = req.user.cart.filter((ele) => {
+			return ele != productId;
+		});
+		await user.save();
+		req.user = user;
+		res.status(201).json(req.user);
 		// console.log("iteam removed");
 	} else {
 		res.status(400);
@@ -27,11 +30,14 @@ const removeFromCart = asyncHandler(async (req, res) => {
 const addToCart = asyncHandler(async (req, res) => {
 	const { productId } = req.params;
 	const Product = await ProductModel.findById(productId);
+	// console.log(Product);
 	if (Product) {
-		const user = req.user;
+		// const user = req.user;
+		// console.log(user);
 		// while (user.cart.length > 0) {
 		// 	user.cart.pop();
 		// }
+		const user = await UserModel.findById(req.user._id);
 		user.cart.push(Product._id.toString());
 		await user.save();
 		req.user = user;
@@ -73,6 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
 		email,
 		password: hashedPassword,
 		carts: [],
+		// isAdmin: false,
 	});
 
 	if (user) {
@@ -81,27 +88,20 @@ const registerUser = asyncHandler(async (req, res) => {
 			expires: new Date(Date.now() + 2589000),
 			httpOnly: false,
 		});
-		res.status(201).json({
-			_id: user.id,
-			name: user.name,
-			email: user.email,
-		});
+		const { password, ...storableInbrowser } = user._doc;
+		res.user = { ...storableInbrowser };
+		res.status(201).json({ ...storableInbrowser });
 	} else {
 		res.status(400);
 		throw new Error("Invalid user data");
 	}
 });
-// Generate JWT
-const generateToken = (id) => {
-	return jwt.sign({ id }, process.env.JWT_SECRET, {
-		expiresIn: "30d",
-	});
-};
+
 // @desc    Authenticate a user
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-	//if alrady logged
+	// if alrady logged
 	// const { token } = req.cookies;
 	// if (token) {
 	// 	console.log(
@@ -122,12 +122,9 @@ const loginUser = asyncHandler(async (req, res) => {
 			expires: new Date(Date.now() + 2589000),
 			httpOnly: false,
 		});
-		res.json({
-			_id: user.id,
-			name: user.name,
-			email: user.email,
-			cart: user.cart,
-		});
+		const { password, ...storableInbrowser } = user._doc;
+		res.user = { ...storableInbrowser };
+		res.status(201).json({ ...storableInbrowser });
 	} else {
 		res.status(400);
 		throw new Error("Invalid credentials");
@@ -138,7 +135,8 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  protected
 const logoutUser = asyncHandler(async (req, res) => {
-	const email = req.user.email;
+	// const email = req.userEmail || "somone";
+	const email = "somone";
 	res.clearCookie("token", { path: "/" });
 	req.user = null;
 	// console.log(email, "logged out now");
@@ -163,6 +161,13 @@ const getMe = asyncHandler(async (req, res) => {
 		throw new Error("Cannot get me/user ");
 	}
 });
+
+// Generate JWT
+const generateToken = (id) => {
+	return jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: "30d",
+	});
+};
 
 module.exports = {
 	registerUser,

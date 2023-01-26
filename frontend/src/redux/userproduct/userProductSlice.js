@@ -73,7 +73,7 @@ export const userProductSlice = createSlice({
 	name: "userProducts",
 	initialState,
 	reducers: {
-		reset: (state) => initialState,
+		userProductsReset: (state) => initialState,
 		//we can right other reduces here directly
 	},
 	//just like normal reducers we set these reducers
@@ -95,7 +95,6 @@ export const userProductSlice = createSlice({
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;
-				state.userProducts = null;
 			})
 			.addCase(addToCart.pending, (state) => {
 				state.isLoading = true;
@@ -125,11 +124,10 @@ export const userProductSlice = createSlice({
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;
-				state.user = null;
 			});
 	},
 });
 
-export const { reset } = userProductSlice.actions;
+export const { userProductsReset } = userProductSlice.actions;
 
 export default userProductSlice.reducer;
