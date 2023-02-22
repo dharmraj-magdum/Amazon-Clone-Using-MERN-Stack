@@ -102,7 +102,7 @@ export const userProductSlice = createSlice({
 			.addCase(addToCart.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.isSuccess = true;
-				state.userProducts = action.payload;
+				state.userProducts.push(action.payload);
 			})
 			.addCase(addToCart.rejected, (state, action) => {
 				state.isLoading = false;
@@ -115,9 +115,10 @@ export const userProductSlice = createSlice({
 			.addCase(removeFromCart.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.isSuccess = true;
-				let id = action.payload.productId;
+				let productId = action.payload;
+				// console.log(productId);
 				state.userProducts = state.userProducts.filter(
-					(ele) => ele._id !== id
+					(ele) => ele._id !== productId
 				);
 			})
 			.addCase(removeFromCart.rejected, (state, action) => {

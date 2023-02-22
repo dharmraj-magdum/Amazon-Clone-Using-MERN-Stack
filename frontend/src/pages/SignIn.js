@@ -64,12 +64,12 @@ const SignIn = () => {
 			console.log(message);
 		}
 
-		if (isSuccess || (user && user.name)) {
-			navigate("/");
-		}
-
 		// dispatch(reset());
 	}, [user, isError, isSuccess, message, navigate, dispatcher]);
+
+	if (isSuccess && user && user.name) {
+		navigate("/");
+	}
 
 	return (
 		<section>
@@ -84,6 +84,7 @@ const SignIn = () => {
 						<div className="form_data">
 							<label htmlFor="email">Email</label>
 							<input
+								autoComplete="true"
 								type="email"
 								name="email"
 								onChange={adddata}
@@ -94,6 +95,7 @@ const SignIn = () => {
 						<div className="form_data">
 							<label htmlFor="password">Password</label>
 							<input
+								autoComplete="true"
 								type="password"
 								name="password"
 								onChange={adddata}

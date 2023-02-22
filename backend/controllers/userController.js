@@ -18,7 +18,7 @@ const removeFromCart = asyncHandler(async (req, res) => {
 		});
 		await user.save();
 		req.user = user;
-		res.status(201).json(req.user);
+		res.status(201).json(productId);
 		// console.log("iteam removed");
 	} else {
 		res.status(400);
@@ -41,7 +41,7 @@ const addToCart = asyncHandler(async (req, res) => {
 		user.cart.push(Product._id.toString());
 		await user.save();
 		req.user = user;
-		res.status(201).json(req.user);
+		res.status(201).json(Product);
 		// console.log("iteam added to cart");
 	} else {
 		res.status(400);
@@ -140,7 +140,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 	res.clearCookie("token", { path: "/" });
 	req.user = null;
 	// console.log(email, "logged out now");
-	res.status(201).json({ msg: `${email}logged out now` });
+	res.status(201).json({ msg: `${email} logged out now` });
 });
 
 // @desc    Get user data

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Divider } from "@mui/material";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../redux/products/productSlice";
@@ -17,16 +17,18 @@ const Cart = () => {
 	// 	(state) => state.auth
 	// );
 	// console.log("cart rendered");
-	const { products, isLoading, isSuccess } = useSelector(
-		(state) => state.products
-	);
+	const [isadded, setIsadded] = useState(false);
+	const { products } = useSelector((state) => state.products);
+	const { isLoading, isSuccess } = useSelector((state) => state.userProducts);
+	const { user } = useSelector((state) => state.auth);
 	const dispatcher = useDispatch();
 	const { productId } = useParams();
-	console.log(productId);
+	// console.log(productId);
 	const temp = products.find((prod) => prod._id === productId);
 
 	const [product, setProduct] = useState(temp);
 
+	const navigator = useNavigate();
 	// console.log(productId);
 	// console.log(products);
 	useEffect(() => {
@@ -39,25 +41,20 @@ const Cart = () => {
 	});
 	// console.log([product]);
 
-	// useEffect(() => {
-	// 	let alreadyCalled = false;
-	// 	const getdata = () => {
-	// 		if (!alreadyCalled) {
-	// 			dispatcher(getProductById(productId));
-	// 			setProduct(products[0]);
-	// 		}
-	// 	};
-	// 	setTimeout(getdata(), 2000);
-	// 	setProduct(products[0]);
-
-	// 	return () => {
-	// 		alreadyCalled = true;
-	// 	};
-	// }, [dispatcher]);
-
 	const addtocart = (id) => {
+		if (!user) {
+			navigator("/login");
+			return;
+		}
 		dispatcher(addToCart(id));
 	};
+
+	if (isSuccess && isadded == false) {
+		setIsadded(true);
+		// setTimeout(() => {
+		// 	setIsadded(false);
+		// }, 1500);
+	}
 
 	return (
 		<div className="cart_section">
@@ -76,6 +73,19 @@ const Cart = () => {
 								<button className="cart_btn2">Buy Now</button>
 							</NavLink>
 						</div>
+						{isadded && (
+							<span
+								style={{
+									color: "#33a544",
+									fontSize: "18px",
+									marginTop: "20px",
+									fontWeight: "300",
+									letterSpacing: "0.4px",
+								}}
+							>
+								Item added to cart succecfully
+							</span>
+						)}
 					</div>
 					<div className="right_cart">
 						<h3>{product.title}</h3>
@@ -121,7 +131,6 @@ const Cart = () => {
 					</div>
 				</>
 			)}
-			;
 		</div>
 	);
 };

@@ -57,7 +57,7 @@ const removeFromCart = async (productId) => {
 	var response;
 	var AxiosError;
 	await axios
-		.post(API_URL_USER + `removeCart/${productId}`)
+		.delete(API_URL_USER + `removeCart/${productId}`)
 		.then((res) => {
 			response = res;
 		})

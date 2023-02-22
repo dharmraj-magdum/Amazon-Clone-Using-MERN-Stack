@@ -19,6 +19,6 @@ router.post("/getme/", getMe);
 
 //protected
 router.post("/addCart/:productId", protector, addToCart);
-router.post("/removeCart/:productId", protector, removeFromCart);
+router.delete("/removeCart/:productId", protector, removeFromCart);
 
 module.exports = router;

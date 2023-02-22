@@ -7,33 +7,26 @@ import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Option = ({ deletedata }) => {
+const Option = ({ deletedata, id }) => {
 	// console.log(deletedata);
-	const [deleted, setDeleted] = useState(false);
+	// console.log(id);
 	const dispatcher = useDispatch();
 	useEffect(() => {
 		// nothing
 		// return () => {
 		// 	dispatcher(reset());
 		// };
-	}, [dispatcher, deleted]);
-	const removeItem = (id) => {
-		setDeleted(true);
-		dispatcher(removeFromCart(id));
-	};
+	}, [dispatcher]);
 
 	return (
-		<div className="add_remove_select" key={deletedata}>
+		<div className="add_remove_select">
 			{/* <select name="" id="">
 				<option value="1">1</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
 				<option value="4">4</option>
 			</select> */}
-			<p
-				onClick={() => removeItem(deletedata)}
-				style={{ cursor: "pointer" }}
-			>
+			<p onClick={() => deletedata(id)} style={{ cursor: "pointer" }}>
 				remove
 			</p>
 			<span>|</span>

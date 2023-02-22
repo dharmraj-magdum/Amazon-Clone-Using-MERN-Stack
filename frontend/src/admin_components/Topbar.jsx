@@ -14,7 +14,7 @@ export default function Topbar() {
 	const dispatcher = useDispatch();
 	const navigator = useNavigate();
 	const logoutUser = () => {
-		console.log("logging our from admin page");
+		// console.log("logging our from admin page");
 		dispatcher(logout());
 		navigator("/");
 	};

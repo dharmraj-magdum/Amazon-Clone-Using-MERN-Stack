@@ -27,20 +27,22 @@ app.use("/api/user", require("./routes/user-routes"));
 ///////
 
 // Serve frontend
-// if (process.env.MODE === "production") {
-// 	app.use(express.static(path.join(__dirname, "../frontend/build")));
+if (process.env.MODE === "production") {
+	app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// 	app.get("*", (req, res) =>
-// 		res.sendFile(
-// 			path.resolve(__dirname, "../", "frontend", "build", "index.html")
-// 		)
-// 	);
-// } else {
-// 	//else condn not good for normal people
-// 	app.get("/", (req, res) =>
-// 		res.send("something went wrong/Please contact to production")
-// 	);
-// }
+	app.get("*", (req, res) =>
+		res.sendFile(
+			path.resolve(__dirname, "../", "frontend", "build", "index.html")
+		)
+	);
+} else {
+	//else condn not good for normal people
+	app.get("/", (req, res) =>
+		res.send(
+			"something went wrong/Please contact to production (Dharmraj Magdum)"
+		)
+	);
+}
 //---------------
 app.use(errorHandler);
 app.listen(port);

@@ -100,7 +100,7 @@ export const userSlice = createSlice({
 			state.isSuccess = false;
 			state.isError = false;
 			state.message = "";
-			console.log("reset of auth slice");
+			// console.log("reset of auth slice");
 		},
 	},
 	extraReducers: (builder) => {
@@ -149,7 +149,7 @@ export const userSlice = createSlice({
 			// })
 			.addCase(logout.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.isError = true;
+				state.isSuccess = true;
 				state.message = action.payload;
 				state.user = null;
 			})

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	cartItems,
 	userProductsReset,
+	removeFromCart,
 } from "../redux/userproduct/userProductSlice";
 //
 import "../stylesheets/buynow.css";
@@ -22,13 +23,18 @@ const Buynow = () => {
 
 	// console.log(cart);
 
+	const removeItem = (id) => {
+		// console.log(id);
+		dispatcher(removeFromCart(id));
+	};
+
 	useEffect(() => {
 		dispatcher(cartItems());
 
 		return () => {
 			// dispatcher(userProductsReset());
 		};
-	}, [dispatcher]);
+	}, [dispatcher, removeFromCart]);
 	return (
 		<>
 			{userProducts && userProducts.length > 0 ? (
@@ -64,7 +70,11 @@ const Buynow = () => {
 													src="https://m.media-amazon.com/images/G/31/marketing/fba/fba-badge_18px-2x._CB485942108_.png"
 													alt="logo"
 												/>
-												<Option deletedata={e._id} />
+												{/* option to remove item */}
+												<Option
+													id={e._id}
+													deletedata={removeItem}
+												/>
 											</div>
 											<h3 className="item_price">
 												₹{e.price}.00
